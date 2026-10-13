@@ -58,6 +58,10 @@ HTML = """<!DOCTYPE html>
   #shotImg,#shotCanvas{display:block; max-width:100%; height:auto;}
   .note{margin-top:16px; font-size:.74rem; color:var(--navy); opacity:.8; text-align:center; line-height:1.6;}
   .startRow{display:flex; flex-direction:column; gap:10px; width:100%; max-width:440px; margin-top:16px;}
+  .qrs{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;}
+  .qrbox{background:#fff; border-radius:16px; padding:12px 8px; text-align:center; box-shadow:0 2px 8px rgba(30,27,74,.08);}
+  .qrbox img{width:120px; height:120px; border-radius:10px; display:block; margin:0 auto;}
+  .qrbox span{display:block; margin-top:6px; font-size:.78rem; font-weight:700; color:var(--navy);}
   .hint{font-size:.82rem; text-align:center; margin-top:10px; color:var(--purple); font-weight:600; min-height:1.2em;}
 </style>
 </head>
@@ -97,6 +101,13 @@ HTML = """<!DOCTYPE html>
   <div class="row">
     <button class="big" id="saveBtn">Save picture</button>
     <button class="big ghost" id="againBtn">Again</button>
+  </div>
+</div>
+<div class="card" id="appCard">
+  <div class="sub" style="margin-bottom:2px">Scan to get the app</div>
+  <div class="qrs">
+    <div class="qrbox"><img src="data:image/png;base64,__QR_IOS__" alt="App Store QR code"><span>App Store</span></div>
+    <div class="qrbox"><img src="data:image/png;base64,__QR_PLAY__" alt="Google Play QR code"><span>Google Play</span></div>
   </div>
 </div>
 <p class="note">Free to play. Everything happens on your own device: nothing is uploaded, nothing is kept.<br>Lea by Legali AI - TechCrunch Disrupt 2026, Moscone West, Booth C1.</p>
@@ -320,5 +331,8 @@ function roundRect(ctx, x, y, w, h, r){
 </body>
 </html>
 """
-open("/workspace/photo-booth/index.html","w").write(HTML.replace("__ICON__", ICON))
+QR_IOS = open("/workspace/photo-booth/qr_appstore.png.b64").read().strip()
+QR_PLAY = open("/workspace/photo-booth/qr_playstore.png.b64").read().strip()
+out = HTML.replace("__ICON__", ICON).replace("__QR_IOS__", QR_IOS).replace("__QR_PLAY__", QR_PLAY)
+open("/workspace/photo-booth/index.html","w").write(out)
 print("index.html written", len(HTML))
